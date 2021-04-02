@@ -1,6 +1,6 @@
 package com.recepie.compose_from_panel_side.network
 
-import com.recepie.compose_from_panel_side.network.model.RecipeNetworkEntity
+import com.recepie.compose_from_panel_side.network.model.RecipeDto
 import com.recepie.compose_from_panel_side.network.responses.RecipeSearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -19,6 +19,6 @@ interface RecipeService {
     suspend fun get(
         @Header("Authorization") token: String,
         @Query("id") id: Int
-    ): RecipeNetworkEntity
+    ): RecipeDto
 }
 
