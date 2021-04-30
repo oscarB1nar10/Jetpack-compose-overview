@@ -4,7 +4,8 @@ import com.recepie.compose_from_panel_side.domain.model.Recipe
 import com.recepie.compose_from_panel_side.network.RecipeService
 import com.recepie.compose_from_panel_side.network.model.RecipeDtoMapper
 
-class RecipeRepository_Impl constructor(
+class RecipeRepository_Impl
+constructor(
     private val recipeService: RecipeService,
     private val mapper: RecipeDtoMapper
 ) : RecipeRepository {
