@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/recipeListFragment"
-        android:name="com.recepie.compose_from_panel_side.RecipeListFragment"
+        android:name="com.recepie.compose_from_panel_side.presentation.ui.recipe_list.RecipeListFragment"
         android:label="RecipeListFragment" >
         <action
             android:id="@+id/action_recipeListFragment_to_recipeFragment"
@@ -14,6 +14,6 @@
     </fragment>
     <fragment
         android:id="@+id/recipeFragment"
-        android:name="com.recepie.compose_from_panel_side.RecipeFragment"
+        android:name="com.recepie.compose_from_panel_side.presentation.ui.recipe.RecipeFragment"
         android:label="RecipeFragment" />
 </navigation>
