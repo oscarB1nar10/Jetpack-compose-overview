@@ -4,10 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.recepie.compose_from_panel_side.presentation.component.AnimatedHeartButton
+import com.recepie.compose_from_panel_side.presentation.component.HeartButtonState
 import com.recepie.compose_from_panel_side.presentation.component.PulsingDemo
 import com.recepie.compose_from_panel_side.presentation.component.SearchAppBar
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,7 +58,29 @@ class RecipeListFragment : Fragment() {
                         onChangeCategoryScrollPosition = viewModel::onChangeCategoryScrollPosition,
                         categoryScrollPosition = viewModel.categoryScrollPosition
                     )
-                    PulsingDemo()
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        val state = remember { mutableStateOf(HeartButtonState.IDLE) }
+
+                        AnimatedHeartButton(
+                            modifier = Modifier,
+                            buttonState = state,
+                            onToggle = {
+                                state.value = if (state.value == HeartButtonState.IDLE)
+                                    HeartButtonState.ACTIVE
+                                else
+                                    HeartButtonState.IDLE
+                            }
+                        )
+
+                    }
+
+                    //PulsingDemo()
                     /*Box(modifier = Modifier.fillMaxSize()) {
                         CircularIndeterminateProgressBar(isDisplayed = loading)
                         LazyColumn {
