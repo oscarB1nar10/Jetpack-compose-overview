@@ -10,14 +10,19 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.recepie.compose_from_panel_side.presentation.ui.recipe_list.FoodCategory
 import com.recepie.compose_from_panel_side.presentation.ui.recipe_list.getAllCategories
 import kotlinx.coroutines.launch
@@ -30,13 +35,14 @@ fun SearchAppBar(
     selectedCategory: FoodCategory?,
     onSelectedCategoryChanged: (String) -> Unit,
     onChangeCategoryScrollPosition: (Int) -> Unit,
-    categoryScrollPosition: Int
+    categoryScrollPosition: Int,
+    onToggleTheme: () -> Unit
 ) {
 
     Surface(
         modifier = Modifier
             .fillMaxWidth(),
-        color = MaterialTheme.colors.primary,
+        color = MaterialTheme.colors.secondary,
         elevation = 8.dp,
     ) {
 
@@ -56,7 +62,7 @@ fun SearchAppBar(
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Filled.Search,
-                            contentDescription = "Search icon"
+                            contentDescription = "Search icon",
                         )
                     },
                     keyboardOptions = KeyboardOptions(
@@ -70,9 +76,28 @@ fun SearchAppBar(
                     ),
                     colors = TextFieldDefaults.textFieldColors(
                         textColor = MaterialTheme.colors.onSurface,
-                        backgroundColor = Color.White,
+                        backgroundColor = MaterialTheme.colors.secondary,
                     )
                 )
+
+                ConstraintLayout(
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                ) {
+                    val menu = createRef()
+                    IconButton(
+                        onClick = onToggleTheme,
+                        modifier = Modifier.constrainAs(menu) {
+                            end.linkTo(parent.end)
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                        }) {
+                        Icon(
+                            imageVector = Icons.Filled.MoreVert,
+                            contentDescription = "change theme mode"
+                        )
+                    }
+
+                }
             }
 
             val listState = rememberLazyListState()

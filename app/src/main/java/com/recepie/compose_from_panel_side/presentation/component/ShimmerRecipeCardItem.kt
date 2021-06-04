@@ -68,7 +68,7 @@ fun ShimmerRecipeCardItem(
 
         Column {
             repeat(5) {
-                drawShimmerCard(
+                DrawShimmerCard(
                     imageHeight = imageHeight,
                     padding = padding,
                     background = brush
@@ -80,7 +80,7 @@ fun ShimmerRecipeCardItem(
 }
 
 @Composable
-private fun drawShimmerCard(
+private fun DrawShimmerCard(
     imageHeight: Dp,
     padding: Dp,
     background: Brush
