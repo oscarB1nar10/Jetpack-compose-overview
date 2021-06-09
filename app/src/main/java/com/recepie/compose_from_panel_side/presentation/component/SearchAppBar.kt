@@ -16,13 +16,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.recepie.compose_from_panel_side.presentation.ui.recipe_list.FoodCategory
 import com.recepie.compose_from_panel_side.presentation.ui.recipe_list.getAllCategories
 import kotlinx.coroutines.launch
@@ -77,7 +74,9 @@ fun SearchAppBar(
                     colors = TextFieldDefaults.textFieldColors(
                         textColor = MaterialTheme.colors.onSurface,
                         backgroundColor = MaterialTheme.colors.secondary,
-                    )
+                    ),
+                    textStyle = MaterialTheme.typography.button
+
                 )
 
                 ConstraintLayout(
