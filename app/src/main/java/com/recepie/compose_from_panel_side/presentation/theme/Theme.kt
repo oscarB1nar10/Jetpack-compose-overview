@@ -41,6 +41,8 @@ fun AppTheme(
 ) {
     MaterialTheme(
         colors = if (darkTheme) DarkThemeColors else LightThemeColors,
+        typography = robotoTypography,
+        shapes = appShapes
     ){
         content()
     }
