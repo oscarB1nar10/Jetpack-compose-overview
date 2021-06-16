@@ -8,7 +8,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BlurOff
+import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.BookmarkRemove
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
@@ -54,24 +59,33 @@ class RecipeListFragment : Fragment() {
 
                     val loading = viewModel.loading.value
 
-                    // State hosting
-                    Column {
-                        SearchAppBar(
-                            query = query,
-                            onQueryChanged = viewModel::onQueryChanged,
-                            newSearch = viewModel::newSearch,
-                            selectedCategory = selectedCategory,
-                            onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
-                            onChangeCategoryScrollPosition = viewModel::onChangeCategoryScrollPosition,
-                            categoryScrollPosition = viewModel.categoryScrollPosition,
-                            onToggleTheme = {
-                                application.toggleLightTheme()
-                            }
-                        )
-
+                    Scaffold(
+                        topBar = {
+                            SearchAppBar(
+                                query = query,
+                                onQueryChanged = viewModel::onQueryChanged,
+                                newSearch = viewModel::newSearch,
+                                selectedCategory = selectedCategory,
+                                onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
+                                onChangeCategoryScrollPosition = viewModel::onChangeCategoryScrollPosition,
+                                categoryScrollPosition = viewModel.categoryScrollPosition,
+                                onToggleTheme = {
+                                    application.toggleLightTheme()
+                                }
+                            )
+                        },
+                        bottomBar = {
+                            MyBottomBar()
+                        },
+                        drawerContent = {
+                            MyDrawer()
+                        }
+                    ) {
                         Box(
-                            modifier = Modifier.fillMaxSize()
-                                .background(color = MaterialTheme.colors.background)) {
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(color = MaterialTheme.colors.surface)
+                        ) {
                             if (loading) {
                                 ShimmerRecipeCardItem(
                                     imageHeight = 250.dp,
@@ -93,5 +107,42 @@ class RecipeListFragment : Fragment() {
                 }
             }
         }
+    }
+}
+
+
+//TODO('Pass navigation controller as argument to navigate to the different destinations')
+@Composable
+fun MyBottomBar() {
+    BottomNavigation(
+        elevation = 12.dp
+    ) {
+        BottomNavigationItem(
+            selected = false,
+            onClick = { },
+            icon = { Icon(Icons.Default.BookmarkRemove, contentDescription = "A random item") }
+        )
+
+        BottomNavigationItem(
+            selected = false,
+            onClick = { },
+            icon = { Icon(Icons.Default.BlurOff, contentDescription = "A random item") }
+        )
+
+        BottomNavigationItem(
+            selected = false,
+            onClick = { },
+            icon = { Icon(Icons.Default.Book, contentDescription = "A random item") }
+        )
+    }
+}
+
+@Composable
+fun MyDrawer(){
+    Column() {
+        Text(text = "Item1")
+        Text(text = "Item2")
+        Text(text = "Item3")
+        Text(text = "Item4")
     }
 }
