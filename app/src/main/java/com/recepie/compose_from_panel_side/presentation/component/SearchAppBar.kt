@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 fun SearchAppBar(
     query: String,
     onQueryChanged: (String) -> Unit,
-    newSearch: () -> Unit,
+    onExecuteSearch: () -> Unit,
     selectedCategory: FoodCategory?,
     onSelectedCategoryChanged: (String) -> Unit,
     onChangeCategoryScrollPosition: (Int) -> Unit,
@@ -68,7 +68,7 @@ fun SearchAppBar(
                     ),
                     keyboardActions = KeyboardActions(
                         onSearch = {
-                            newSearch()
+                            onExecuteSearch()
                         }
                     ),
                     colors = TextFieldDefaults.textFieldColors(
@@ -117,7 +117,7 @@ fun SearchAppBar(
                                 onSelectedCategoryChanged(it)
                                 onChangeCategoryScrollPosition(index)
                             },
-                            onExecuteSearch = newSearch
+                            onExecuteSearch = {onExecuteSearch()}
                         )
                     }
                 }
