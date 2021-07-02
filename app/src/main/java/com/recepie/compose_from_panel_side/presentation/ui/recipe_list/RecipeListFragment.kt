@@ -12,7 +12,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
@@ -82,7 +81,7 @@ class RecipeListFragment : Fragment() {
                                             )
                                         }
                                     } else {
-                                        viewModel.newSearch()
+                                        viewModel.onTriggerEvent(RecipeListEvent.NewSearchEvent)
                                     }
                                 },
                                 selectedCategory = selectedCategory,
@@ -117,7 +116,7 @@ class RecipeListFragment : Fragment() {
                                         viewModel.onChangeRecipeScrollPosition(index)
 
                                         if((index + 1) >= (page * PAGE_SIZE) && !loading){
-                                            viewModel.nextPage()
+                                            viewModel.onTriggerEvent(RecipeListEvent.NextPageEvent)
                                         }
 
                                         RecipeCard(recipe = recipe, onClick = {})
