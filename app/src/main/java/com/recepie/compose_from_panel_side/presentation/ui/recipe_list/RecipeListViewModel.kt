@@ -1,5 +1,6 @@
 package com.recepie.compose_from_panel_side.presentation.ui.recipe_list
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -8,6 +9,7 @@ import com.recepie.compose_from_panel_side.domain.model.Recipe
 import com.recepie.compose_from_panel_side.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import javax.inject.Inject
 
 const val PAGE_SIZE = 30
@@ -30,55 +32,71 @@ constructor(
     var recipeListScrollPosition = 0
 
     init {
-        newSearch()
+        onTriggerEvent(RecipeListEvent.NewSearchEvent)
     }
 
-    fun newSearch() {
+    fun onTriggerEvent(event: RecipeListEvent) {
         viewModelScope.launch {
-            loading.value = true
-            resetSearchState()
-            val result = recipeRepository.search(
-                token = token,
-                page = 1,
-                query = query.value
-            )
-            loading.value = false
-            recipes.value = result
-        }
-    }
+            try {
+                when (event) {
+                    is RecipeListEvent.NewSearchEvent -> {
+                        newSearch()
+                    }
 
-    fun nextPage(){
-        viewModelScope.launch {
-            //Prevent duplicate event due to recompose happening to quickly
-            if((recipeListScrollPosition + 1) >= (page.value * PAGE_SIZE)){
-                loading.value = true
-                incrementPage()
-
-                if(page.value > 1){
-                    val result = recipeRepository.search(
-                        token = token,
-                        page = page.value,
-                        query = query.value
-                    )
-                    appendRecipes(result)
+                    is RecipeListEvent.NextPageEvent -> {
+                        nextPage()
+                    }
                 }
-
-                loading.value = false
+            } catch (e: Exception) {
+                Log.e("RecipeListViewModel", "onTriggerEvent: Exception: ${e.message}")
             }
         }
     }
 
-    private fun appendRecipes(recipes: List<Recipe>){
+    // Use case #1
+    private suspend fun newSearch() {
+        loading.value = true
+        resetSearchState()
+        val result = recipeRepository.search(
+            token = token,
+            page = 1,
+            query = query.value
+        )
+        loading.value = false
+        recipes.value = result
+    }
+
+    // Use case #2
+    private suspend fun nextPage() {
+        //Prevent duplicate event due to recompose happening to quickly
+        if ((recipeListScrollPosition + 1) >= (page.value * PAGE_SIZE)) {
+            loading.value = true
+            incrementPage()
+
+            if (page.value > 1) {
+                val result = recipeRepository.search(
+                    token = token,
+                    page = page.value,
+                    query = query.value
+                )
+                appendRecipes(result)
+            }
+
+            loading.value = false
+        }
+    }
+
+    private fun appendRecipes(recipes: List<Recipe>) {
         val current = ArrayList(this.recipes.value)
         current.addAll(recipes)
         this.recipes.value = current
     }
 
-    private fun incrementPage(){
+    private fun incrementPage() {
         page.value = page.value + 1
     }
 
-    fun onChangeRecipeScrollPosition(position: Int){
+    fun onChangeRecipeScrollPosition(position: Int) {
         recipeListScrollPosition = position
     }
 
