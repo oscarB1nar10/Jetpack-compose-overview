@@ -12,6 +12,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
@@ -62,6 +63,8 @@ class RecipeListFragment : Fragment() {
 
                     val loading = viewModel.loading.value
 
+                    val page = viewModel.page.value
+
                     val scaffoldState = rememberScaffoldState()
 
                     Scaffold(
@@ -101,7 +104,7 @@ class RecipeListFragment : Fragment() {
                             modifier = Modifier
                                 .background(color = MaterialTheme.colors.surface)
                         ) {
-                            if (loading) {
+                            if (loading && recipes.isEmpty()) {
                                 ShimmerRecipeCardItem(
                                     imageHeight = 250.dp,
                                     padding = 8.dp
@@ -111,6 +114,12 @@ class RecipeListFragment : Fragment() {
                                     itemsIndexed(
                                         items = recipes
                                     ) { index, recipe ->
+                                        viewModel.onChangeRecipeScrollPosition(index)
+
+                                        if((index + 1) >= (page * PAGE_SIZE) && !loading){
+                                            viewModel.nextPage()
+                                        }
+
                                         RecipeCard(recipe = recipe, onClick = {})
                                     }
                                 }
