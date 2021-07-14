@@ -14,18 +14,19 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class RecipeFragment : Fragment() {
 
-    private var recipeId: MutableState<Int> = mutableStateOf(-1)
+    private val viewModel: RecipeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        arguments?.getInt("recipeId")?.let {id ->
-            recipeId.value = id
+        arguments?.getInt("recipeId")?.let { id ->
+            viewModel.onTriggerEvent(RecipeEvent.GetRecipeEvent(id))
         }
     }
 
@@ -36,8 +37,14 @@ class RecipeFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
+
+                val loading = viewModel.loading.value
+                val recipe = viewModel.recipe.value
+
                 Column(modifier = Modifier.padding(10.dp)) {
-                    Text(text = "Recipe id: ${recipeId.value}", fontSize = 21.sp)
+                    Text(text = recipe?.let {
+                        "Selected recipeId: ${recipe.id}"
+                    } ?: "Loading ...", fontSize = 21.sp)
                 }
             }
         }
