@@ -2,6 +2,7 @@ package com.recepie.compose_from_panel_side.presentation.component
 
 import DEFAULT_RECIPE_IMAGE
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
@@ -29,7 +30,9 @@ fun RecipeCard(
                 top = 6.dp,
                 start = 16.dp,
                 end = 16.dp
-            ),
+            )
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
         shape = MaterialTheme.shapes.medium,
         elevation = 8.dp
     ) {

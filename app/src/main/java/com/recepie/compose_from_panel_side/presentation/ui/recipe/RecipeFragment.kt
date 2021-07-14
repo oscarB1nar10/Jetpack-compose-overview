@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
@@ -17,6 +19,16 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class RecipeFragment : Fragment() {
 
+    private var recipeId: MutableState<Int> = mutableStateOf(-1)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.getInt("recipeId")?.let {id ->
+            recipeId.value = id
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,7 +37,7 @@ class RecipeFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 Column(modifier = Modifier.padding(10.dp)) {
-                    Text(text = "Recipe Fragment", fontSize = 21.sp)
+                    Text(text = "Recipe id: ${recipeId.value}", fontSize = 21.sp)
                 }
             }
         }
