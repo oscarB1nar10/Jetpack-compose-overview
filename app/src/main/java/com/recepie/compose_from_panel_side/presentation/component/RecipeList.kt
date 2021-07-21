@@ -9,7 +9,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -81,13 +80,5 @@ fun RecipeList(
                 }
             }
         }
-        CircularIndeterminateProgressBar(isDisplayed = loading)
-        DefaultSnackbar(
-            snackbarHostState = scaffoldState.snackbarHostState,
-            onDismiss = {
-                scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
-            },
-            modifier = Modifier.align(Alignment.BottomCenter)
-        )
     }
 }
